@@ -9,10 +9,16 @@ export default {
     <assignments-list :assignments="filters.Uncompleted" title="Uncompleted">
     <assignment-create v-on:add="add"></assignment-create>
     </assignments-list>
-    <assignments-list :assignments="filters.Completed" title="Completed">
-    <assignment-create v-on:add="add"></assignment-create>
-    </assignments-list>
+
+    <div v-show="showCompleted">
+    <assignments-list 
+    :assignments="filters.Completed" 
+    title="Completed" 
+    can-toggle
+    @toggle="showCompleted = !showCompleted"
+    ></assignments-list>
     
+    </div>
     
    </section>
     `, 
@@ -20,7 +26,7 @@ export default {
     data() {
         return {
             assignments: [],
-            
+            showCompleted: true
         }
       },
       computed: {
@@ -36,7 +42,7 @@ export default {
          fetch('http://localhost:3001/assignments')
          .then(response => response.json())
          .then(assignments => {
-           this.assignments = assignments //saves it to the data property
+           this.assignments = assignments //saves it to the data property at the top
          });
        },
 
